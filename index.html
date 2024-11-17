@@ -1,101 +1,74 @@
 <!DOCTYPE html>
-<html lang="cn">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中文简介播放器</title>
     <style>
-        body{
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
             margin: 0;
-            padding: 0;
         }
-        .footer{
-            position: absolute;
-            top: 50%;
+        .player-container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        video {
             width: 100%;
-            height: 50%;
-            background-color: #5966f4;
+            max-width: 600px;
+            border-radius: 5px;
         }
-        .bubbles{
-            position: absolute;
-            width: 100%;
-            height: 20px;
-            filter: url(#blur);
-            background: inherit;
-        }
-        .bubble{
-            position: absolute;
-            --x:100px;
-            --s:50px;
-            --d:2s;
-            border-radius: 50%;
-            background: inherit;
-            width: var(--s);
-            height: var(--s);
-            left: var(--x);
-            top: 30px;
-            animation: bubble var(--d) ease-in forwards;
-        }
-        @keyframes bubble{
-            75%{
-                transform: scale(1);
-            }
-            100%{
-                transform: scale(0);
-                top: -200px;
-            }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-<div class="footer">
-    <div class="bubbles">
-        <div class="bubble"></div>
+    <div class="player-container">
+        <h1>中文简介播放器</h1>
+        <video id="myVideo" controls>
+            <source src="https://interactive-examples.mdn.mozilla.net/media/examples/flower.webm" type="video/webm">
+            您的浏览器不支持 HTML5 视频标签。
+        </video>
+        <br>
+        <button onclick="playPause()">播放/暂停</button>
+        <button onclick="increaseVolume()">增加音量</button>
+        <button onclick="decreaseVolume()">减小音量</button>
     </div>
-</div>
-<svg>
-    <defs>
-        <filter id="blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur">
-            </feGaussianBlur>
-            <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 20 -10">
-            </feColorMatrix>
-        </filter>
-    </defs>
-</svg>
-</body>
-<script>
-    const n = 6;
-    // 获取 .bubbles 元素
-    const bubbles = document.querySelector('.bubbles');
-    // 获取视窗宽度
-    const vw = document.documentElement.clientWidth;
-    // 事件监听器：当动画结束时移除元素
-    bubbles.addEventListener('animationend', (e) => {
-        e.target.remove(); // 移除触发动画结束事件的元素
-    });
 
-    // 创建气泡函数
-    function createBubble() {
-        for (let i = 0; i < n; i++) {
-            // 创建一个新的 div 元素
-            const bubble = document.createElement('div');
-            bubble.classList.add('bubble');
-            // 生成随机大小、位置和持续时间
-            const s = Math.random() * 100 + 50;
-            const x = Math.random() * (vw - s);
-            const d = Math.random() * 2 + 1;
-            // 设置 CSS 变量
-            bubble.style.setProperty('--x', x + 'px');
-            bubble.style.setProperty('--s', s + 'px');
-            bubble.style.setProperty('--d', d + 's');
-            // 将气泡添加到 .bubbles 元素中
-            bubbles.appendChild(bubble);
+    <script>
+        var myVideo = document.getElementById("myVideo");
+
+        function playPause() {
+            if (myVideo.paused) {
+                myVideo.play();
+            } else {
+                myVideo.pause();
+            }
         }
-    }
-    // 初始化一次气泡
-    createBubble();
-    // 每隔 500 毫秒创建一次新的气泡
-    setInterval(createBubble, 500);
 
-</script>
+        function increaseVolume() {
+            if (myVideo.volume < 1) {
+                myVideo.volume += 0.1;
+            }
+        }
+
+        function decreaseVolume() {
+            if (myVideo.volume > 0) {
+                myVideo.volume -= 0.1;
+            }
+        }
+    </script>
+</body>
 </html>
